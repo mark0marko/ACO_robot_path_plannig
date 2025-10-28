@@ -2,16 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
-from test_problems import problem1
+from test_problems import problem2
 
 START = (0, 0)
-GOAL = (19, 19)
 
-GRID_SIZE, obstacles = problem1()
+GRID_SIZE, obstacles, GOAL = problem2()
 
 # ACO parameters
 num_ants = 30
-num_iterations = 500
+num_iterations = 50
 alpha = 2.0                             # pheromone influence
 beta = 1.0                              # heuristic influence
 evaporation_factor = 0.3
@@ -23,9 +22,9 @@ pheromone = np.ones( ( GRID_SIZE, GRID_SIZE ) )
 
 def find_neighbors( cell ):
     x, y = cell
-    directions = [ 
+    directions = [
         (1,0), (-1,0), (0,1), (0,-1),
-        (1, 1), (-1, -1), (1, -1), (-1, 1) 
+        (1, 1), (-1, -1), (1, -1), (-1, 1)
     ]
 
     result = []
@@ -62,7 +61,7 @@ for iter in range(num_iterations):
             if not neighbors: break
 
             probs = []
-            
+
             for ( n, step_cost ) in neighbors:
                 tau = pheromone[n]
                 eta = 1.0 / step_cost
@@ -115,12 +114,13 @@ if best_path:
 else:
     print("No path found!")
 
-plt.grid(True, which='both', color='magenta', linewidth=1)
-plt.xticks(np.arange(-0.5, GRID_SIZE, 1))
-plt.yticks(np.arange(-0.5, GRID_SIZE, 1))
-plt.gca().set_xticks(np.arange(-0.5, GRID_SIZE, 1), minor=True)
-plt.gca().set_yticks(np.arange(-0.5, GRID_SIZE, 1), minor=True)
-plt.gca().grid(which='minor', color='magenta', linestyle='-', linewidth=1)
+ax = plt.gca()
+ax.set_xticks(np.arange(-0.5, GRID_SIZE, 1), minor=True)
+ax.set_yticks(np.arange(-0.5, GRID_SIZE, 1), minor=True)
+ax.grid(which='minor', color='magenta', linestyle='-', linewidth=1)
+
+ax.set_xticks([])
+ax.set_yticks([])
 
 plt.gca().invert_yaxis()
 plt.title(f"ACO Path (Cost: {best_cost:2f})")
