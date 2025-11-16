@@ -7,7 +7,6 @@ from test_problems import problem2
 
 START = ( 0, 0 )
 GRID_SIZE, obstacles, GOAL = problem2()
-obstacles = set( obstacles )  # make mutable
 
 dynamic_schedule = {
     25: {'add': [ (0,5),(9,5) ], 'remove': []},
@@ -73,8 +72,8 @@ def find_neighbors( cell, people_positions ):
         ny = y + dy
         if 0 <= nx < GRID_SIZE and 0 <= ny < GRID_SIZE:
             if ( nx, ny ) not in obstacles and ( nx, ny ) not in people_positions:
-                step_cost = 1.41 if abs( dx )+abs( dy ) == 2 else 1.0
-                result.append( ( (nx, ny), step_cost) )
+                step_cost = 1.41 if abs( dx ) + abs( dy ) == 2 else 1.0
+                result.append( ( (nx, ny), step_cost ) )
     return result
 
 def draw_current( iteration, people_positions, current_best_path, current_best_cost ):
